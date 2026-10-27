@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {readFileSync,existsSync} from 'node:fs';
+execFileSync(process.execPath,['scripts/build.mjs']);
+const pages=['index.html','servicos.html','projetos.html','orcamento.html'];
+test('gera quatro páginas com título, idioma e título principal',()=>{for(const page of pages){const html=readFileSync(`dist/${page}`,'utf8');assert.match(html,/<html lang="pt-BR">/);assert.equal((html.match(/<h1>/g)||[]).length,1);assert.match(html,/<title>.+Haro Consultoria<\/title>/);}});
+test('links e recursos locais apontam a arquivos gerados',()=>{for(const page of pages){const html=readFileSync(`dist/${page}`,'utf8');for(const [,ref] of html.matchAll(/(?:href|src)="([^"]+)"/g)){if(ref.startsWith('https:')||ref.startsWith('#'))continue;assert.ok(existsSync('dist/'+ref.split(/[?#]/)[0]),`${page}: ${ref}`);}}});
+test('formulário tem rótulos e feedback acessível',()=>{const html=readFileSync('dist/orcamento.html','utf8');for(const name of ['name','business','service','message']) {assert.ok(html.includes(`for="${name}"`));assert.ok(html.includes(`id="${name}-error"`));}assert.ok(html.includes('aria-live="polite"'));assert.match(html,/<button[^>]*disabled/);});
+test('todos os serviços oferecem orçamento pré-selecionado',()=>{const html=readFileSync('dist/servicos.html','utf8');assert.equal((html.match(/orcamento.html\?servico=/g)||[]).length,7);});
+test('distribuição não contém scripts de manutenção',()=>{assert.ok(!existsSync('dist/scripts'));assert.ok(!existsSync('dist/tests'));assert.ok(existsSync('dist/404.html'));});
