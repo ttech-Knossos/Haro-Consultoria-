@@ -1,0 +1,17 @@
+{
+  "brand": "Haro Consultoria",
+  "whatsapp": "",
+  "services": [
+    {"id":"sites","title":"Um site para o seu negócio","short":"Mostre o que você faz e ajude novos clientes a encontrar você.","example":"Para lojas, restaurantes, salões e profissionais que precisam se apresentar na internet.","items":["Apresentação do negócio e dos serviços","Página adaptada ao celular","Botões de contato e localização"]},
+    {"id":"catalogos","title":"Catálogo digital","short":"Seus produtos e serviços organizados em um link fácil de compartilhar.","example":"Para enviar suas opções ao cliente sem depender de várias fotos soltas na conversa.","items":["Categorias e descrições claras","Fotos dos produtos ou serviços","Caminho para pedir informações ou orçamento"]},
+    {"id":"gestao","title":"Vendas e estoque organizados","short":"Acompanhe suas vendas e saiba o que entra e sai do estoque.","example":"Para quem usa cadernos ou várias planilhas e quer reunir as informações.","items":["Registro de vendas e produtos","Consulta de quantidades disponíveis","Visão dos dados importantes para o negócio"]},
+    {"id":"agenda","title":"Agendamentos mais simples","short":"Organize horários e facilite a marcação dos seus atendimentos.","example":"Para salões, profissionais autônomos e serviços com hora marcada.","items":["Organização de serviços e horários","Consulta da agenda","Fluxo de marcação definido com você"]},
+    {"id":"atendimento","title":"Atendimento pelo WhatsApp","short":"Organize os pedidos e facilite as respostas do dia a dia.","example":"Para quem recebe muitas mensagens e precisa acompanhar cada atendimento.","items":["Organização do fluxo de atendimento","Modelos de respostas para dúvidas frequentes","Avaliação das ferramentas adequadas ao seu negócio"]},
+    {"id":"automacoes","title":"Menos tarefas repetitivas","short":"Conecte etapas do trabalho para reduzir atividades manuais.","example":"Para evitar copiar os mesmos dados de um lugar para outro todos os dias.","items":["Mapeamento das tarefas repetidas","Avaliação de conexões entre ferramentas","Automação de etapas combinadas no projeto"]},
+    {"id":"consultoria","title":"Inteligência artificial na prática","short":"Entenda onde a IA pode ajudar e aprenda a usar com propósito.","example":"Para começar com orientação, exemplos e ferramentas que façam sentido para sua rotina.","items":["Conversa sobre as necessidades do negócio","Sugestões de uso para a rotina","Orientação para utilizar as ferramentas"]}
+  ],
+  "projects": [
+    {"id":"guia","title":"Guia de Retificação","client":"Respeita!","type":"Busca de serviços","description":"Uma ferramenta para encontrar instituições que apoiam a retificação de nome e gênero, com filtros por localização.","solution":"Organização de informações em um catálogo que ajuda a encontrar caminhos de atendimento.","url":"https://guiaderetificacaorespeita.pages.dev/","tags":["Catálogo","Filtros por localização"]},
+    {"id":"central","title":"Central de Links","client":"Respeita!","type":"Página de links","description":"Uma página que reúne os canais e as ferramentas da Respeita! em um só endereço.","solution":"Acesso direto aos links de denúncia e ao Guia de Retificação, com espaço para novos recursos.","url":"https://respeita.pages.dev/","tags":["Site","Acesso pelo celular"]}
+  ]
+}
