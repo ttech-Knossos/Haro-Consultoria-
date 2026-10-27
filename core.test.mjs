@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {validateLead,whatsappUrl,validPhone,safeUrl,escapeHtml} from '../src/core.js';
+const c=JSON.parse(await readFile(new URL('../src/content.json',import.meta.url),'utf8'));
+const lead={name:'João & Ana',business:'Café São José',service:'sites',message:'Preciso de um catálogo com preços e horários.'};
+test('aceita solicitação válida com acentos',()=>assert.deepEqual(validateLead(lead,c.services),{}));
+test('recusa campos vazios e espaços',()=>assert.deepEqual(Object.keys(validateLead({name:' ',business:'',message:' ',service:''},c.services)),['name','business','message','service']));
+test('recusa conteúdo acima dos limites',()=>{for(const [key,max] of [['name',80],['business',100],['message',1000]]) assert.ok(validateLead({...lead,[key]:'x'.repeat(max+1)},c.services)[key]);});
+test('aceita escolha sem serviço definido',()=>assert.deepEqual(validateLead({...lead,service:'nao-sei'},c.services),{}));
+test('recusa serviço desconhecido',()=>assert.ok(validateLead({...lead,service:'<script>'},c.services).service));
+test('recusa WhatsApp ausente ou malformado',()=>{for(const phone of ['',null,'123','+55 41 99999-9999','0000000000000']) {assert.equal(validPhone(phone),false);assert.throws(()=>whatsappUrl(phone,lead,c.services));}});
+test('codifica acentos, quebras e símbolos sem perder texto',()=>{const url=new URL(whatsappUrl('5541999999999',lead,c.services));assert.equal(url.origin,'https://wa.me');assert.equal(url.pathname,'/5541999999999');assert.equal(url.searchParams.size,1);assert.ok(url.searchParams.get('text').includes('João & Ana'));assert.ok(url.searchParams.get('text').includes('Café São José'));assert.ok(url.searchParams.get('text').includes('\n'));});
+test('não gera link para formulário inválido',()=>assert.throws(()=>whatsappUrl('5541999999999',{...lead,message:''},c.services)));
+test('bloqueia protocolos inseguros no portfólio',()=>{for(const url of ['javascript:alert(1)','http://example.com','https://user:pass@example.com','invalid']) assert.equal(safeUrl(url),null);});
+test('escapa HTML do conteúdo',()=>assert.equal(escapeHtml('<img onerror="x"> &'), '&lt;img onerror=&quot;x&quot;&gt; &amp;'));
+test('todos os serviços podem preencher um orçamento',()=>{assert.equal(c.services.length,7);for(const s of c.services) assert.deepEqual(validateLead({...lead,service:s.id},c.services),{});});
+test('portfólio tem URLs HTTPS e identificadores únicos',()=>{assert.equal(c.projects.length,2);assert.equal(new Set(c.projects.map(p=>p.id)).size,c.projects.length);for(const p of c.projects) assert.ok(safeUrl(p.url));});
